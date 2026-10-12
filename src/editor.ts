@@ -45,6 +45,7 @@ export class ResultsEditor {
  }
  get path(): string { return this.view.state.field(editorInfoField, false)?.file?.path ?? ''; }
  get source(): string { return this.view.state.doc.toString(); }
+ get metadataPending(): boolean { return this.metadataSource !== undefined; }
  get allowed(): boolean { return !!this.view.state.field(editorLivePreviewField, false) && this.plugin.isEnabled(this.path); }
  update(update: ViewUpdate): void {
   const switched = this.ownerPath !== this.path || this.active !== this.allowed;

@@ -60,7 +60,7 @@ Start with a test note containing a heading, a blank line, and `<%+ 1 + 1 %>`. S
 
 ## Settings
 
-Manual enable and disable choices are saved by path. Renaming a note removes the old manual choice; enable the new path again if no rule applies. Results are held in memory for each editor. Two open editors of one note have separate caches and render jobs. Source mode does not show result widgets. The Pro controls save their values while Pro is off, but the rules are inactive.
+Manual enable and disable choices are saved by path. Renaming a note removes its manual enable; enable the new path again if no rule applies. A manual disable moves to the new path, so a rule does not enable the renamed note. Results are held in memory for each editor. Two open editors of one note have separate caches and render jobs. Source mode does not show result widgets. The Pro controls save their values while Pro is off, but the rules are inactive.
 
 ## FAQ
 

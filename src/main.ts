@@ -34,7 +34,8 @@ export default class LiveTemplateResultsPlugin extends Plugin {
   this.addCommand({ id: 'open-panel', name: 'Open template results panel', callback: () => { void this.openPanel(); } });
   this.registerEvent(this.app.metadataCache.on('changed', (file, data, cache) => this.onMetadataChanged(file, data, cache)));
   // A new path needs a new enable action. Do not transfer trust to a replacement file.
-  this.registerEvent(this.app.vault.on('rename', (_file, oldPath) => { void this.forget(oldPath); }));
+  // A manual disable moves with the note, so a rename does not let a rule enable it.
+  this.registerEvent(this.app.vault.on('rename', (file, oldPath) => { void this.forget(oldPath, file.path); }));
   this.registerEvent(this.app.vault.on('delete', (file) => { void this.forget(file.path); }));
   this.app.workspace.onLayoutReady(() => {
    void pro.refresh();
@@ -42,12 +43,17 @@ export default class LiveTemplateResultsPlugin extends Plugin {
   });
  }
  onMetadataChanged(file: TFile, data: string, cache: CachedMetadata): void {
+  // Only the editors of this file depend on its metadata. Other files change often in large or synced vaults.
+  const editors = [...this.editors].filter((editor) => editor.path === file.path);
+  if (!editors.length) return;
   const stamp = this.stamp(cache);
   const previous = this.metadata.get(file.path); this.metadata.set(file.path, stamp);
-  this.syncEditors();
-  if (isPro() && this.watchKeys().length && previous !== undefined && previous !== stamp) {
-   for (const editor of this.editors) if (editor.path === file.path) editor.requestMetadataRefresh(data);
-  }
+  for (const editor of editors) editor.sync();
+  this.drawPanels();
+  if (!isPro() || !this.watchKeys().length) return;
+  const changed = previous !== undefined && previous !== stamp;
+  // A request waits when the editor text differs from the saved text. The next save gives new text.
+  for (const editor of editors) if (changed || editor.metadataPending) editor.requestMetadataRefresh(data);
  }
  /** Records the watched values at render time, so the first later change can refresh. */
  rememberMetadata(path: string): void {
@@ -87,9 +93,11 @@ export default class LiveTemplateResultsPlugin extends Plugin {
   const leaf = this.app.workspace.getLeavesOfType(PANEL)[0] ?? this.app.workspace.getRightLeaf(false);
   if (leaf) { await leaf.setViewState({ type: PANEL, active: true }); await this.app.workspace.revealLeaf(leaf); }
  }
- private async forget(path: string): Promise<void> {
+ private async forget(path: string, newPath?: string): Promise<void> {
+  const disabled = this.settings.disabled.includes(path);
   this.settings.enabled = this.settings.enabled.filter((p) => p !== path);
   this.settings.disabled = this.settings.disabled.filter((p) => p !== path);
+  if (disabled && newPath !== undefined && !this.settings.disabled.includes(newPath)) this.settings.disabled.push(newPath);
   this.metadata.delete(path); this.syncEditors(); await this.saveSettings();
  }
  onunload(): void { for (const editor of [...this.editors]) editor.destroy(); resetPro(); }
