@@ -1,6 +1,6 @@
 {
 	"name": "live-template-results",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"private": true,
 	"description": "Show dynamic template results while you edit notes in Live Preview.",
 	"main": "main.js",

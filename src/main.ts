@@ -15,7 +15,7 @@ export default class LiveTemplateResultsPlugin extends Plugin {
  private metadata = new Map<string, string>();
  async onload(): Promise<void> {
   await this.loadSettings();
-  const pro = createGitHubSponsors(this.app, this.manifest.id, SPONSORS);
+  const pro = createGitHubSponsors(this.app, this.manifest.id, SPONSORS, this);
   pro.init(); this.pro = pro; bindPro(pro);
   const tab = new LiveTemplateResultsSettingTab(this.app, this);
   this.addSettingTab(tab);
