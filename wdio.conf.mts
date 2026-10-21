@@ -8,6 +8,8 @@ import { readFileSync } from 'node:fs';
 import * as os from 'node:os';
 import * as path from 'node:path';
 import ObsidianLauncher from 'obsidian-launcher';
+// Templater 2.26.0 in .test-deps (checksum checked). Also here, so a direct "wdio run" (CI shots) has it.
+import './test/prepare-templater.mjs';
 
 const cacheDir = process.env.OBSIDIAN_CACHE ?? path.join(os.homedir(), '.cache', 'obsidian-launcher');
 const { minAppVersion } = JSON.parse(readFileSync('manifest.json', 'utf8')) as { minAppVersion: string };

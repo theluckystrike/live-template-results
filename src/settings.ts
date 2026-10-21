@@ -3,6 +3,7 @@ import { sponsorsSettingItems } from './license/github-obsidian';
 import { PRO_UI } from './pro';
 import type LiveTemplateResultsPlugin from './main';
 import type { EnableRules } from './model';
+import { helloSettingItems } from './hello/settings';
 
 export interface LiveTemplateResultsSettings extends EnableRules { watch: string }
 export const DEFAULT_SETTINGS: LiveTemplateResultsSettings = { enabled: [], disabled: [], folders: '', property: '', watch: '' };
@@ -14,6 +15,11 @@ export function normalizeSettings(value: unknown): LiveTemplateResultsSettings {
 export class LiveTemplateResultsSettingTab extends PluginSettingTab {
  constructor(app: ConstructorParameters<typeof PluginSettingTab>[0], public plugin: LiveTemplateResultsPlugin) { super(app, plugin); }
  getSettingDefinitions(): SettingDefinitionItem[] {
+  // The product rows, then the "More from NoteMods" card (packages/hello).
+  return [...this.productSettingDefinitions(), ...helloSettingItems()];
+ }
+
+ productSettingDefinitions(): SettingDefinitionItem[] {
   return [
    { name: 'Trusted notes', desc: 'Use the enable command only for notes with scripts you trust. Templater code can change files or send note data to services chosen by the script. Source edits need a refresh.' },
    ...(this.plugin.pro ? sponsorsSettingItems(this.plugin.pro, PRO_UI) : []),

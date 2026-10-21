@@ -52,13 +52,15 @@ Run Open template results panel to see cached commands, output, and errors from 
 
 ## Install
 
-This source is prepared for review. A community directory listing is not claimed here. Build the source or use release files supplied by the publisher. Copy `main.js`, `manifest.json`, and `styles.css` into `<vault>/.obsidian/plugins/live-template-results/`, then enable the plugin in Community plugins. Install Templater separately. Obsidian 1.13.4 or later is required.
+Open Settings, Community plugins, Browse. Search for "Live Template Results". Select Install, then Enable. To install by hand, copy `main.js`, `manifest.json`, and `styles.css` from the latest release into `<vault>/.obsidian/plugins/live-template-results/`, then enable the plugin in Community plugins. Install Templater separately. Obsidian 1.13.4 or later is required.
 
 ## Usage
 
 Start with a test note containing a heading, a blank line, and `<%+ 1 + 1 %>`. Switch to Live Preview. Read the command before you enable the note. Run the enable command, then move the cursor to the heading. The result should show `2`. Move back into the command to edit it. After an edit, run refresh to see the new result.
 
 ## Settings
+
+After a minor or major update, this plugin opens one What's new tab in the background. The tab and settings card suggest other NoteMods plugins and Zovo Chat and link to notemods.com for feedback ([privacy](https://notemods.com/privacy/)). The tab sends no data. Turn the tab off in Settings.
 
 Manual enable and disable choices are saved by path. Renaming a note removes its manual enable; enable the new path again if no rule applies. A manual disable moves to the new path, so a rule does not enable the renamed note. Results are held in memory for each editor. Two open editors of one note have separate caches and render jobs. Source mode does not show result widgets. The Pro controls save their values while Pro is off, but the rules are inactive.
 

@@ -6,6 +6,8 @@ import { DEFAULT_SETTINGS, LiveTemplateResultsSettingTab, normalizeSettings, typ
 import { enabledFor, RenderQueue } from './model';
 import { ResultsEditor, resultsExtension } from './editor';
 import { PANEL, ResultsPanel } from './panel';
+import { setupHello } from './hello/index';
+import WHATS_NEW from './whats-new.json';
 
 export default class LiveTemplateResultsPlugin extends Plugin {
  settings: LiveTemplateResultsSettings = { ...DEFAULT_SETTINGS };
@@ -14,6 +16,8 @@ export default class LiveTemplateResultsPlugin extends Plugin {
  readonly queue = new RenderQueue();
  private metadata = new Map<string, string>();
  async onload(): Promise<void> {
+  // First: "What's new" reads its state before the settings load (packages/hello). It does not wait.
+  setupHello(this, WHATS_NEW);
   await this.loadSettings();
   const pro = createGitHubSponsors(this.app, this.manifest.id, SPONSORS, this);
   pro.init(); this.pro = pro; bindPro(pro);
