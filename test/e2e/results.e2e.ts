@@ -153,6 +153,6 @@ describe('Pro boundaries and metadata refresh', () => {
   expect(await browser.$('.ltr-panel').getText()).toContain('Pro rules.md');
   await browser.executeObsidian(({ plugins }) => { (plugins.liveTemplateResults as LiveTemplateResultsPlugin).pro!.signOut(); });
   expect((await state('Pro rules.md')).results).toEqual([]);
-  expect(await browser.$('.ltr-panel').getText()).toContain('Sign in');
+  expect(await browser.$('.ltr-panel').getText()).toContain('Sponsor on GitHub, then sign in from the plugin settings.');
  });
 });

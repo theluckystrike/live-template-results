@@ -1,7 +1,7 @@
 import { Notice, Plugin, type CachedMetadata, type TFile } from 'obsidian';
 import { createGitHubSponsors } from './license/github-obsidian';
 import type { SponsorsManager } from './license/index';
-import { SPONSORS, bindPro, isPro, resetPro } from './pro';
+import { SPONSORS, bindPro, isPro, proNotice, resetPro } from './pro';
 import { DEFAULT_SETTINGS, LiveTemplateResultsSettingTab, normalizeSettings, type LiveTemplateResultsSettings } from './settings';
 import { enabledFor, RenderQueue } from './model';
 import { ResultsEditor, resultsExtension } from './editor';
@@ -93,7 +93,7 @@ export default class LiveTemplateResultsPlugin extends Plugin {
  syncEditors(): void { for (const editor of this.editors) editor.sync(); this.drawPanels(); }
  drawPanels(): void { for (const leaf of this.app.workspace.getLeavesOfType(PANEL)) if (leaf.view instanceof ResultsPanel) leaf.view.draw(); }
  private async openPanel(): Promise<void> {
-  if (!isPro()) { new Notice('Pro is needed for the results panel. Results in the editor are free.'); return; }
+  if (!isPro()) { proNotice('Pro is needed for the results panel. Results in the editor are free.'); return; }
   const leaf = this.app.workspace.getLeavesOfType(PANEL)[0] ?? this.app.workspace.getRightLeaf(false);
   if (leaf) { await leaf.setViewState({ type: PANEL, active: true }); await this.app.workspace.revealLeaf(leaf); }
  }

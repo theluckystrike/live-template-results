@@ -1,5 +1,5 @@
 import { ItemView, type WorkspaceLeaf } from 'obsidian';
-import { isPro, PRO_UI } from './pro';
+import { isPro, PRO_UI, proText } from './pro';
 import type LiveTemplateResultsPlugin from './main';
 export const PANEL = 'live-template-results-panel';
 export class ResultsPanel extends ItemView {
@@ -10,7 +10,7 @@ export class ResultsPanel extends ItemView {
  draw(): void {
   this.contentEl.empty(); this.contentEl.addClass('ltr-panel');
   this.contentEl.createEl('h4', { text: this.getDisplayText() });
-  if (!isPro()) { this.contentEl.createEl('p', { text: 'Sign in with a GitHub account that meets the payment requirement to use this panel. Free results stay in the editor.' }); return; }
+  if (!isPro()) { this.contentEl.createEl('p', { text: proText('The results panel needs Pro. Free results stay in the editor.') }); return; }
   let count = 0;
   for (const editor of this.plugin.editors) {
    if (!editor.allowed) continue;

@@ -1,5 +1,11 @@
 # live-template-results
 
+## 1.1.1
+
+### Patch Changes
+
+- The Pro notice for the results panel now has a Sponsor on GitHub button.
+
 ## 1.1.0
 
 ### Minor Changes
